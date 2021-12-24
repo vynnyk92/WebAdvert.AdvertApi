@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Vynny</Authors>
+    <Company>Home</Company>
+    <Product>WebAdvert Micro</Product>
+    <PackageProjectUrl>https://github.com/vynnyk92/WebAdvert.AdvertApi</PackageProjectUrl>
+    <PackageId>WebAdvert.Models.Vynny</PackageId>
   </PropertyGroup>
 
 </Project>

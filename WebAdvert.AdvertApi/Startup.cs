@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using WebAdvert.AdvertApi.HealthChecks;
 using WebAdvert.AdvertApi.Mapping;
 using WebAdvert.AdvertApi.Services;
 
@@ -31,6 +33,8 @@ namespace WebAdvert.AdvertApi
             services.AddAWSService<IAmazonDynamoDB>();
             services.AddTransient<IAdvertStorageService, DynamoDbAdvertStorageService>();
             services.AddControllers();
+            services.AddHealthChecks()
+                .AddCheck<StorageHealthCheck>("Check", tags: new[] { "check" });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,9 +48,14 @@ namespace WebAdvert.AdvertApi
             app.UseRouting();
 
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health/check", new HealthCheckOptions
+                {
+                    Predicate = hc => hc.Tags.Contains("check")
+                });
                 endpoints.MapControllers();
             });
         }

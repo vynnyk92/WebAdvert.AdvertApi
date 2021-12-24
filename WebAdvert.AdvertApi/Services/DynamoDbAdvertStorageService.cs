@@ -15,6 +15,8 @@ namespace WebAdvert.AdvertApi.Services
         Task<string> Add(AdvertModel advertModel);
 
         Task<bool> Confirm(ConfirmAdvertModel confirmAdvertModel);
+
+        Task<bool> HealthCheckAsync();
     }
 
     public class DynamoDbAdvertStorageService : IAdvertStorageService
@@ -56,6 +58,14 @@ namespace WebAdvert.AdvertApi.Services
             {
                 await context.DeleteAsync(record);
             }
+
+            return true;
+        }
+
+        public async Task<bool> HealthCheckAsync()
+        {
+            var tableData = await _amazonDynamoDB.DescribeTableAsync("Adverts");
+            return tableData.Table.TableStatus.Equals(TableStatus.ACTIVE);
         }
     }
 }

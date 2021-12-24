@@ -46,12 +46,12 @@ namespace WebAdvert.AdvertApi.Controllers
         [HttpPut]
         [ProducesResponseType(401)]
         [ProducesResponseType(200)]
-        [ProducesResponseType(typeof(CreateAdvertResponse), 200)]
         public async Task<IActionResult> Confirm([FromBody] ConfirmAdvertModel advertModel)
         {
             try
             {
                 await _advertStorageService.Confirm(advertModel);
+                return Ok();
             }
             catch (KeyNotFoundException ex)
             {

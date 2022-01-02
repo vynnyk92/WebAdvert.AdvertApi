@@ -1,4 +1,4 @@
-﻿namespace WebAdvert.AdvertApi.Dtos
+﻿namespace WebAdvert.Models
 {
     public class CreateAdvertResponse
     {

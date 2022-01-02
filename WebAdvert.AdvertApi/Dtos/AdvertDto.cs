@@ -13,6 +13,8 @@ namespace WebAdvert.AdvertApi.Dtos
         [DynamoDBProperty]
         public string Description { get; set; }
         [DynamoDBProperty]
+        public string FilePath { get; set; }
+        [DynamoDBProperty]
         public double Price { get; set; }
         [DynamoDBProperty]
         public DateTime CreationDateTime { get; set; }
@@ -29,9 +31,10 @@ namespace WebAdvert.AdvertApi.Dtos
             advertDto.Status = AdvertStatusDto.Pending;
         }
 
-        public static void SetActiveStatus(this AdvertDto advertDto)
+        public static void ActivateAndSetPath(this AdvertDto advertDto, string filePath)
         {
             advertDto.Status = AdvertStatusDto.Active;
+            advertDto.FilePath = filePath;
         }
     }
 }

@@ -51,7 +51,7 @@ namespace WebAdvert.AdvertApi.Services
 
             if (confirmAdvertModel.Status.Equals(AdvertStatus.Active))
             {
-                record.SetActiveStatus();
+                record.ActivateAndSetPath(confirmAdvertModel.FilePath);
                 await context.SaveAsync(record);
             }
             else

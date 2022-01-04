@@ -64,7 +64,7 @@ namespace WebAdvert.AdvertApi.Services
 
         public async Task<bool> HealthCheckAsync()
         {
-            var tableData = await _amazonDynamoDB.DescribeTableAsync("Adverts");
+            var tableData = await _amazonDynamoDB.DescribeTableAsync("Advert");
             return tableData.Table.TableStatus.Equals(TableStatus.ACTIVE);
         }
     }

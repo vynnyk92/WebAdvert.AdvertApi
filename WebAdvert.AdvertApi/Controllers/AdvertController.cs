@@ -8,7 +8,7 @@ using WebAdvert.Models;
 
 namespace WebAdvert.AdvertApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/advert")]
     [ApiController]
     public class AdvertController : ControllerBase
     {
@@ -20,6 +20,7 @@ namespace WebAdvert.AdvertApi.Controllers
         }
 
         [HttpPost]
+        [Route("create")]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [ProducesResponseType(typeof(CreateAdvertResponse),200)]
@@ -44,6 +45,7 @@ namespace WebAdvert.AdvertApi.Controllers
         }
 
         [HttpPut]
+        [Route("confirm")]
         [ProducesResponseType(401)]
         [ProducesResponseType(200)]
         public async Task<IActionResult> Confirm([FromBody] ConfirmAdvertModel advertModel)

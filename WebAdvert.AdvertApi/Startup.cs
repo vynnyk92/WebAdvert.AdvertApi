@@ -29,8 +29,11 @@ namespace WebAdvert.AdvertApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var options = Configuration.GetAWSOptions();
+
             services.AddAutoMapper(typeof(AdvertProfile));
-            services.AddAWSService<IAmazonDynamoDB>();
+            var amazonDynamoDB = options.CreateServiceClient<IAmazonDynamoDB>();
+            services.AddSingleton<IAmazonDynamoDB>(amazonDynamoDB);
             services.AddTransient<IAdvertStorageService, DynamoDbAdvertStorageService>();
             services.AddControllers();
             services.AddHealthChecks()
@@ -46,9 +49,6 @@ namespace WebAdvert.AdvertApi
             }
 
             app.UseRouting();
-
-            app.UseAuthorization();
-            
 
             app.UseEndpoints(endpoints =>
             {

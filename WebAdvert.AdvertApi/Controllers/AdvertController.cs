@@ -13,10 +13,12 @@ namespace WebAdvert.AdvertApi.Controllers
     public class AdvertController : ControllerBase
     {
         private readonly IAdvertStorageService _advertStorageService;
+        private readonly IMessagePublisher _messagePublisher;
 
-        public AdvertController(IAdvertStorageService advertStorageService)
+        public AdvertController(IAdvertStorageService advertStorageService, IMessagePublisher messagePublisher)
         {
             _advertStorageService = advertStorageService;
+            _messagePublisher = messagePublisher;
         }
 
         [HttpPost]
@@ -53,6 +55,7 @@ namespace WebAdvert.AdvertApi.Controllers
             try
             {
                 await _advertStorageService.Confirm(advertModel);
+                await _messagePublisher.PublishAdvertConfirmed(advertModel);
                 return Ok();
             }
             catch (KeyNotFoundException ex)

@@ -16,6 +16,8 @@ namespace WebAdvert.AdvertApi.Services
 
         Task<bool> Confirm(ConfirmAdvertModel confirmAdvertModel);
 
+        Task<AdvertDto> GetAdvert(string id);
+
         Task<bool> HealthCheckAsync();
     }
 
@@ -60,6 +62,12 @@ namespace WebAdvert.AdvertApi.Services
             }
 
             return true;
+        }
+
+        public async Task<AdvertDto> GetAdvert(string id)
+        {
+            using var context = new DynamoDBContext(_amazonDynamoDB);
+            return await context.LoadAsync<AdvertDto>(id);
         }
 
         public async Task<bool> HealthCheckAsync()

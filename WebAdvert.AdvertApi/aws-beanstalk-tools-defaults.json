@@ -1,6 +1,6 @@
 
 {
-    "region" : "eu-west-1",
+    "region" : "us-east-1",
     "configuration" : "Debug",
     "framework"     : "netcoreapp3.1",
     "self-contained" : false,
@@ -8,7 +8,7 @@
     "environment"    : "WebAdvertAdvertApi-dev",
     "enable-xray"    : false,
     "enhanced-health-type" : "basic",
-    "additional-options"   : "",
+    "additional-options"   : "\"aws:autoscaling:launchconfiguration,SecurityGroups\"=\"sg-078b225a3a4eda936\";\"aws:ec2:vpc,Subnets\"=\"subnet-02aa3f0db9d9d5ca4\"",
     "solution-stack"       : "64bit Amazon Linux 2 v2.2.9 running .NET Core",
     "environment-type"     : "SingleInstance",
     "cname"                : "webadvertadvertapi-dev",

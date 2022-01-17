@@ -8,7 +8,7 @@
     <Product>WebAdvert Micro</Product>
     <PackageProjectUrl>https://github.com/vynnyk92/WebAdvert.AdvertApi</PackageProjectUrl>
     <PackageId>WebAdvert.Models.Vynny</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
 </Project>

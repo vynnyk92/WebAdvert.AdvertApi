@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
+using Amazon.ServiceDiscovery;
+using Amazon.ServiceDiscovery.Model;
 using Amazon.SimpleNotificationService;
+using Amazon.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -64,7 +67,7 @@ namespace WebAdvert.AdvertApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async Task Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -86,6 +89,33 @@ namespace WebAdvert.AdvertApi
                 });
                 endpoints.MapControllers();
             });
+            var conf = app.ApplicationServices.GetRequiredService<IConfiguration>();
+            await RegisterToCloudMap(conf);
+        }
+
+        private async Task RegisterToCloudMap(IConfiguration configuration)
+        {
+            var instanceId = EC2InstanceMetadata.InstanceId;
+            var serviceId = configuration.GetValue<string>("CloudMap:ServiceId");
+            if (!string.IsNullOrEmpty(instanceId))
+            {
+                var ipv4 = EC2InstanceMetadata.PrivateIpAddress;
+                using (var client = new AmazonServiceDiscoveryClient())
+                {
+                    await client.RegisterInstanceAsync(new RegisterInstanceRequest()
+                    {
+                        InstanceId = instanceId,
+                        ServiceId = serviceId,
+                        Attributes = new Dictionary<string, string>
+                        {
+                            { "AWS_INSTANCE_ID", ipv4},
+                            { "AWS_INSTANCE_PORT", "80" }
+                        }
+                    });
+                }
+
+                
+            }
         }
     }
 }

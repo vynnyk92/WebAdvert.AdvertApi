@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using WebAdvert.AdvertApi.HealthChecks;
 using WebAdvert.AdvertApi.Mapping;
 using WebAdvert.AdvertApi.Services;
@@ -47,6 +48,19 @@ namespace WebAdvert.AdvertApi
             services.AddControllers();
             services.AddHealthChecks()
                 .AddCheck<StorageHealthCheck>("Check", tags: new[] { "check" });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Web Adverts Api",
+                    Version = "v1",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Test"
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +71,11 @@ namespace WebAdvert.AdvertApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Adverts Api");
+            });
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
